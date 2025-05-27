@@ -13,7 +13,7 @@ import (
 var filePath string
 
 func init() {
-	flag.StringVar(&filePath, "path", "", "Path to go file.")
+	flag.StringVar(&filePath, "path", "", "Path to Go file.")
 	flag.Parse()
 }
 
