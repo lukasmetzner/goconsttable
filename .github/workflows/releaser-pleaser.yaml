@@ -1,0 +1,21 @@
+name: releaser-pleaser
+
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types:
+      - edited
+      - labeled
+      - unlabeled
+
+jobs:
+  releaser-pleaser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: releaser-pleaser
+        uses: apricote/releaser-pleaser@v0.5.1
+
