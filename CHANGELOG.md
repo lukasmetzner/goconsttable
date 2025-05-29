@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.0](https://github.com/lukasmetzner/goconsttable/releases/tag/v0.2.0)
+
+### Features
+
+- test
+
 ## [v0.1.0](https://github.com/lukasmetzner/goconsttable/releases/tag/v0.1.0)
 
 ### Features
