@@ -8,13 +8,20 @@ import (
 	"go/token"
 	"os"
 	"strings"
+	"text/template"
 )
 
 var filePath string
+var tmplFilePath string
 
 func init() {
 	flag.StringVar(&filePath, "path", "", "Path to Go file.")
+	flag.StringVar(&tmplFilePath, "template-path", "", "Path to a Go template file.")
 	flag.Parse()
+}
+
+type Template struct {
+	GoConstTable string
 }
 
 func main() {
@@ -69,11 +76,29 @@ func main() {
 		return true
 	})
 
-	fmt.Println("| Constant | Description |")
-	fmt.Println("| --- | --- |")
-	for constName, comment := range table {
-		fmt.Printf("| %s | %s |\n", constName, comment)
+	tmplStr := DefaultTemplate
+	if tmplFilePath != "" {
+		tmplBytes, err := os.ReadFile(tmplFilePath)
+		if err != nil {
+			panic(err)
+		}
+		tmplStr = string(tmplBytes)
 	}
+
+	tmpl, err := template.New("goconsttable").Parse(tmplStr)
+	if err != nil {
+		panic(err)
+	}
+
+	tableStr := strings.Builder{}
+	tableStr.WriteString("| Constant | Description |\n")
+	tableStr.WriteString("| --- | --- |\n")
+
+	for constName, comment := range table {
+		tableStr.WriteString(fmt.Sprintf("| %s | %s |\n", constName, comment))
+	}
+
+	tmpl.Execute(os.Stdout, Template{ GoConstTable: tableStr.String() })
 }
 
 func addTableEntry(key, value string, table *map[string]string) {
@@ -85,10 +110,11 @@ func addTableEntry(key, value string, table *map[string]string) {
 			parts[i] = text
 		}
 	}
-	value = strings.Join(parts, " ")
-	if _, ok := (*table)[key]; ok {
-		(*table)[key] += fmt.Sprintf(" %s", value)
+	comment := strings.Join(parts, " ")
+	current := (*table)[key]
+	if current == "" {
+		(*table)[key] += fmt.Sprintf("%s", comment)
 	} else {
-		(*table)[key] = value
+		(*table)[key] += fmt.Sprintf(" %s", comment)
 	}
 }
