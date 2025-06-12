@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.0.1](https://github.com/lukasmetzner/goconsttable/releases/tag/v0.0.1)
+
+### Bug Fixes
+
+- removed extra whitespace at description end
+
 ## [v0.5.0](https://github.com/lukasmetzner/goconsttable/releases/tag/v0.5.0)
 
 ### Features
