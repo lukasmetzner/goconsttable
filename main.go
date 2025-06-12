@@ -102,18 +102,19 @@ func main() {
 }
 
 func addTableEntry(key, value string, table *map[string]string) {
-	parts := strings.Split(value, "\n")
-	for i := range parts {
-		text := strings.Trim(parts[i], "/")
-		text = strings.TrimSpace(text)
-		if text != "" {
-			parts[i] = text
-		}
+	if value == "" {
+		return
 	}
-	comment := strings.Join(parts, " ")
+
+	comment := strings.Trim(value, "/ \n")
+	comment = strings.ReplaceAll(comment, "\n", " ")
+	if comment == "" {
+		return
+	}
+
 	current := (*table)[key]
 	if current == "" {
-		(*table)[key] += fmt.Sprintf("%s", comment)
+		(*table)[key] += comment
 	} else {
 		(*table)[key] += fmt.Sprintf(" %s", comment)
 	}
