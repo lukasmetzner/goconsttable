@@ -1,6 +1,6 @@
 package examples
 
-const ( 
+const (
 	// This is a comment.
 	TestValue3 string = "test-value"
 
@@ -9,7 +9,7 @@ const (
 	AnotherValue3 string = "another-value"
 )
 
-const ( 
+const (
 	// This is a comment.
 	TestValue4 string = "test-value"
 
